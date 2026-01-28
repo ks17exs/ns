@@ -1,0 +1,124 @@
+body {
+  padding-top: 70px;
+}
+
+.logo-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+form[role="search"] {
+  max-width: 600px;
+}
+
+.dropdown-menu {
+  background-color: #000;
+}
+
+.dropdown-menu .dropdown-item {
+  color: white;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #222;
+}
+
+.card-product {
+  position: relative;
+  padding-bottom: 2.5rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-product:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-hover-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card-product:hover .card-hover-buttons {
+  display: flex;
+}
+
+.card-availability {
+  position: relative;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.card.card-product .card-img-top {
+  width: 240px !important;
+  height: 300px !important;
+  object-fit: scale-down;
+}
+
+.card-product-photo{
+  width: 240px !important;
+  height: 300px !important;
+  object-fit: scale-down;
+}
+
+.profile-product img{
+  max-height: 200px;
+  width: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+
+.rating i {
+  color: gold !important;
+}
+
+.sort-links a {
+  color: black;
+  text-decoration: none;
+}
+
+.sort-links a:hover {
+  text-decoration: underline;
+}
+
+.catalog-container {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.pagination .page-link {
+  color: black;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.footer-page{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ch-pw{
+  width: 100%;
+  max-width: 500px;
+}
+
+.msg{
+  min-width: 300px;
+  z-index: 1055;
+}

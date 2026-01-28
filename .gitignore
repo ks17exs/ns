@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Django cache
+*.log
+**/migrations/__pycache__/
+
+# Static content (media files & assets not owned by author)
+main/static/images/
+main/static/certificates/
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/

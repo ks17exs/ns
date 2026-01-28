@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}О нас{% endblock %}
+
+{% block content %}
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <h2 class="mb-4">О нас</h2>
+                <p>
+                Мы — компания «Спорттовары», специализирующаяся на продаже сертифицированного спортивного питания. Наша цель — помочь каждому найти подходящий продукт для поддержания здоровья, улучшения спортивных результатов и повышения качества жизни.
+                </p>
+                <p>
+                В нашем каталоге собраны товары от ведущих мировых брендов, проверенные временем и качеством. Мы уделяем особое внимание составу продуктов и предоставляем покупателям всю необходимую информацию, чтобы сделать осознанный выбор.
+                </p>
+                <p>
+                Мы понимаем, что выбор спортивного питания — это индивидуальный процесс, поэтому предлагаем интеллектуальную систему подбора продуктов на основе ваших целей, уровня активности и предпочтений. Наш сайт не просто каталог, а полноценный инструмент для подбора нужных товаров.
+                </p>
+                <p>
+                Мы стремимся к тому, чтобы покупка спортивного питания была простой, удобной и безопасной. Вы можете выбрать товары онлайн, а забрать заказ — в нашем розничном магазине.
+                </p>
+                <p>
+                Благодарим вас за доверие к нашей компании и надеемся стать вашим надёжным партнёром в мире спортивного питания!
+                </p>
+            </div>
+        </div>
+        <!-- Блок: Нам доверяют -->
+        <div class="my-5">
+            <h3 class="text-center mb-4">Нам доверяют</h3>
+            <div class="row justify-content-center text-center">
+                <div class="col-4 col-md-2 mb-3">
+                    <img src="{% static fitness_formula.photo %}" class="img-fluid" alt="Fitness Formula">
+                </div>
+                <div class="col-4 col-md-2 mb-3">
+                    <img src="{% static just_fit.photo %}" class="img-fluid" alt="Just Fit">
+                </div>
+                <div class="col-4 col-md-2 mb-3">
+                    <img src="{% static maxler.photo %}" class="img-fluid" alt="Maxler">
+                </div>
+            </div>
+        </div>
+        <!-- Блок: Отзывы клиентов -->
+        <div class="my-5">
+            <h3 class="text-center mb-4">Отзывы клиентов</h3>
+            <div class="row justify-content-center">
+                {% for review in top_reviews %}
+                <div class="col-md-5">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ review.product.name }}</h5>
+                            <p class="mb-2 text-warning">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.grade %}
+                                        ★
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                                <small class="text-muted">({{ review.grade }}/5)</small>
+                            </p>
+                            <p class="card-text">{{ review.comment }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center">Пока нет отзывов.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white">
+    <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+    </div>
+    </footer>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Спорттовары{% endblock %}
+
+{% block content %}
+    <main class="container-fluid mt-4 px-5">
+        <div class="row">
+            <!-- Фильтры -->
+            <div class="col-auto border rounded p-3 me-5 bg-white">
+            <form method="get" class="mb-3">
+                <h5>Категории</h5>
+                {% for category in categories %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="category" value="{{ category.id }}"
+                            id="cat-{{ category.id }}" {% if category_id == category.id|stringformat:"s" %}checked{% endif %}>
+                        <label class="form-check-label" for="cat-{{ category.id }}">{{ category.name }}</label>
+                    </div>
+                {% endfor %}
+            <hr>
+                <h5>Цена</h5>
+                <div class="d-flex flex-column">
+                    <label class="form-label">Цена</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">от</span>
+                        <input type="number" class="form-control" name="price_min" placeholder="0"
+                            value="{{ price_min }}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">до</span>
+                        <input type="number" class="form-control" name="price_max" placeholder="10000"
+                            value="{{ price_max }}">
+                    </div>
+                </div>
+            <hr>
+                <h5>Бренд</h5>
+                <select name="brand" class="form-select mb-3">
+                    <option value="">Выбрать бренд</option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.id }}" {% if brand_id == brand.id|stringformat:"s" %}selected{% endif %}>
+                            {{ brand.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            <hr>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-dark bg-black">Применить</button>
+                    <a href="{% url 'catalog' %}" class="btn btn-outline-secondary">Сбросить</a>
+                </div>
+            </form>
+            </div>
+            <!-- Каталог -->
+            <div class="col">
+                <div class="mb-3 sort-links catalog-container">
+                    <i class="fas fa-sort-amount-down me-2"></i>
+                    <span class="me-3">Сортировать:</span>
+                    <a href="?{{ query_string }}&sort=" class="me-2">По умолчанию</a> |
+                    <a href="?{{ query_string }}&sort=price_desc" class="mx-2">Сначала дороже</a> |
+                    <a href="?{{ query_string }}&sort=price_asc" class="ms-2">Сначала дешевле</a>
+                </div>
+                <div class="row row-cols-5 g-3">
+                    <!-- Карточка товара -->
+                    {% for product in page_obj %}
+                    <div class="col">
+                        <a href="{% url 'product-detail' product.id %}" class="text-decoration-none text-dark">
+                            <div class="card card-product h-100 p-2">
+                                <img src="{% static product.photo %}" class="card-img-top" alt="{{ product.name }}">
+                                <div class="card-body p-1">
+                                    <h6 class="card-title">{{ product.name }}</h6>
+                                    <p class="mb-1 text-muted">{{ product.price }} ₽</p>
+                                    <div class="rating mb-1">
+                                        {% if product.average_rating %}
+                                            {% with product.average_rating|floatformat:"0" as rating %}
+                                                {% for i in "12345" %}
+                                                    {% if forloop.counter <= rating|add:"0" %}
+                                                        <i class="fas fa-star"></i>
+                                                    {% else %}
+                                                        <i class="far fa-star"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% for i in "12345" %}
+                                                <i class="far fa-star"></i>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-hover-buttons">
+                                    <form method="post" action="{% url 'add-to-cart' product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-dark">
+                                            <i class="fas fa-cart-plus"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'add-to-wishlist' product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-dark">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                                <span class="card-availability {% if product.total_quantity > 0 %}text-success{% else %}text-danger{% endif %}">
+                                    {% if product.total_quantity > 0 %}
+                                        В наличии
+                                    {% else %}
+                                        Нет в наличии
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                <a class="page-link" href="?{{ query_string }}&page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+        <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+        </div>
+    </footer>
+{% endblock %}

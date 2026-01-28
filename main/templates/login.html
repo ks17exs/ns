@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center my-5">
+    <div class="p-5 rounded shadow bg-white ch-pw">
+        <h2 class="text-center mb-4">Вход</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3 row">
+                    <label class="col-sm-5 col-form-label">{{ field.label }}</label>
+                    <div class="col-sm-7">
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-dark bg-black">Войти</button>
+                <a href="{% url 'register' %}" class="btn btn-outline-secondary">Регистрация</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+        <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+        </div>
+    </footer>
+{% endblock %}

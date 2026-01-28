@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Результаты поиска{% endblock %}
+
+{% block content %}
+<main class="container mt-5">
+    <h2 class="mb-4">Результаты поиска{% if query %} по запросу: "{{ query }}"{% endif %}</h2>
+    {% if page_obj %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in page_obj %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{% static product.photo %}" class="card-img-top card-product-photo" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.price }} ₽</p>
+                        <a href="{% url 'product-detail' product.id %}" class="btn btn-outline-dark">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    {% else %}
+        <p>Ничего не найдено.</p>
+    {% endif %}
+</main>
+{% endblock %}
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+        <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+        </div>
+    </footer>
+{% endblock %}

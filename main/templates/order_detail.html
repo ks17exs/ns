@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load multiply %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center my-5">
+    <div class="p-5 rounded shadow bg-white w-100" style="max-width: 810px;">
+        <h2 class="mb-4 text-center">Заказ №{{ order.id }}</h2>
+
+        <p><strong>Дата оформления:</strong> {{ order.order_date|date:"d.m.Y H:i" }}</p>
+        <p><strong>Статус:</strong> <span class="badge bg-info text-dark">{{ order.status.name }}</span></p>
+        <p><strong>Комментарий:</strong> {{ order.comment|default:"-" }}</p>
+        <p><strong>Магазин:</strong> {{ order.store.name }}</p>
+
+        <table class="table mt-4">
+            <thead class="table-light">
+                <tr class="text-center">
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr class="text-center align-middle">
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price }} ₽</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.quantity|multiply:item.product.price }} ₽</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p class="fw-bold text-end mt-3 fs-5">Итого: {{ total_price }} ₽</p>
+
+        <div class="text-center mt-4">
+            <a href="{% url 'profile' %}" class="btn btn-outline-secondary">Назад в профиль</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+        <div class="container">
+            <small>&copy; 2025 Спорттовары — Все права защищены</small>
+        </div>
+    </footer>
+{% endblock %}

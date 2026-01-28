@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Контакты{% endblock %}
+{% block content %}
+<main class="container my-5">
+    <div class="row align-items-center">
+        <!-- Левая колонка: Контактная информация -->
+        <div class="col-md-6">
+            <h3 class="mb-4">Наши магазины</h3>
+            {% for store in stores %}
+                <div class="mb-4 border-bottom pb-3">
+                    <h3 class="fw-bold">{{ store.name }}</h3>
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Адрес:</h5>
+                        <p><i class="fas fa-map-marker-alt me-2 text-black"></i>{{ store.address }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Телефон:</h5>
+                        <p><i class="fas fa-phone me-2 text-black"></i>{{ store.phone }}</p>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">Режим работы:</h5>
+                        <p><i class="fas fa-clock me-2 text-black"></i>{{ store.open_hours }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Информация о магазинах временно недоступна.</p>
+            {% endfor %}
+        </div>
+        <!-- Правая колонка: изображение -->
+        <div class="col-md-6 text-center">
+            <img src="{% static 'images/sport.jpg' %}" alt="Изображение спорттематики" class="img-fluid rounded shadow">
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+    <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+    </div>
+</footer>
+{% endblock %}

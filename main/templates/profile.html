@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load sum_filters %}
+
+{% block content %}
+    <main class="container my-5">
+        <h2 class="fw-bold mb-4">Профиль пользователя</h2>
+        <!-- Блок: Личная информация -->
+        <div class="card mb-4">
+            <div class="card-header bg-black text-white d-flex justify-content-between align-items-center">
+                <span>Личная информация</span>
+                <a href="{% url 'edit-profile' %}" class="btn btn-outline-light btn-sm">Редактировать</a>
+            </div>
+            <div class="card-body">
+                <p><strong>Имя:</strong> {{ user.get_full_name|default:user.username }}</p>
+                <p><strong>E-mail:</strong> {{ user.email }}</p>
+                <p><strong>Телефон:</strong> {{ user.phone|default:"—" }}</p>
+                <p><strong>Дата регистрации:</strong> {{ user.registration_date|date:"d E Y" }}</p>
+            </div>
+        </div>
+        <!-- Блок: История заказов -->
+        <div class="card mb-4">
+          <div class="card-header bg-black text-white">История заказов</div>
+          <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered align-middle text-center">
+                    <thead class="table-light">
+                    <tr>
+                        <th>№ заказа</th>
+                        <th>Дата</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.order_date|date:"d.m.Y" }}</td>
+                        <td>
+                            {% with order.orderitem_set.all as items %}
+                                {{ items|sum_order_total }} ₽
+                            {% endwith %}
+                        </td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status.name == 'Завершён' %}bg-success
+                                {% elif order.status.name == 'В обработке' %}bg-warning text-dark
+                                {% else %}bg-secondary
+                                {% endif %}
+                            ">
+                                {{ order.status.name }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'order-detail' order.id %}" class="btn btn-sm btn-outline-dark">Подробнее</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-muted">Нет заказов</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+                </div>
+          </div>
+        </div>
+        <!-- Блок: Избранное -->
+        <div class="card mb-4">
+            <div class="card-header bg-black text-white d-flex justify-content-between align-items-center">
+                <span>Избранное</span>
+                <a href="{% url 'wishlist' %}" class="btn btn-outline-light btn-sm">Перейти в избранное</a>
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-3 g-3">
+                    {% for item in wishlist_items %}
+                    <div class="col">
+                        <div class="card h-100 profile-product">
+                            <img src="{% static item.product.photo %}" class="card-img-top" alt="{{ item.product.name }}">
+                            <div class="card-body p1">
+                                <h6 class="card-title">{{ item.product.name }}</h6>
+                                <p class="text-muted mb-0">{{ item.product.price }} ₽</p>
+                            </div>
+                        </div>
+                    </div>  
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Блок: Настройки -->
+        <div class="card">
+            <div class="card-header bg-black text-white">Настройки аккаунта</div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'password_change' %}" class="btn btn-outline-dark">Сменить пароль</a>
+                    {% if request.user.is_authenticated %}
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Выйти из аккаунта</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block footer %}
+    <footer class="bg-black py-4 mt-5 border-top text-center text-white">
+        <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+        </div>
+    </footer>
+{% endblock footer %}

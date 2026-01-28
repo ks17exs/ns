@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Избранное{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center my-5">
+    <div class="p-5 rounded shadow bg-white w-100" style="max-width: 800px;">
+        <h2 class="mb-4 text-center">Список избранного</h2>
+
+        {% if items %}
+            <table class="table align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>Товар</th>
+                        <th>Количество</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'product-detail' item.product.id %}" class="text-decoration-none">
+                                {{ item.product.name }}
+                            </a>
+                        </td>
+                        <td>{{ item.quantity }} шт.</td>
+                        <td>
+                            <form method="post" action="{% url 'remove-from-wishlist' item.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center text-muted">Список избранного пуст.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="bg-black py-4 mt-5 border-top text-center text-white footer-page">
+    <div class="container">
+        <small>&copy; 2025 Спорттовары — Все права защищены</small>
+    </div>
+</footer>
+{% endblock %}
