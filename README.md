@@ -51,7 +51,7 @@
 
 1. Клонировать репозиторий:
 ```bash
-git clone [<URL_репозитория>](https://github.com/ks17exs/ns)
+git clone https://github.com/ks17exs/ns
 ```
 
 2. Создать виртуальное окружение и установить зависимости:
